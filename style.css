@@ -1,0 +1,915 @@
+/* ==========================================================================
+   1. CONFIGURAÇÕES GLOBAIS E VARIÁVEIS
+   ========================================================================== */
+:root {
+    --primary: #ff0044;
+    --primary-hover: #ff3366;
+    --secondary: #28a745;
+    --dark: #1a1a1a;
+    --light: #f4f4f4;
+    --white: #ffffff;
+    --gray-text: #666;
+    --shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html { 
+    scroll-behavior: smooth; 
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background-color: var(--light);
+    color: var(--dark);
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   2. HEADER E NAVEGAÇÃO
+   ========================================================================== */
+header {
+    background: var(--primary);
+    color: var(--white);
+    padding: 10px 5%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-container h1 { 
+    font-size: 1.5rem; 
+    margin: 0; 
+}
+
+nav { 
+    display: flex; 
+    align-items: center; 
+    gap: 20px; 
+}
+
+nav a {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+.btn-carrinho-topo {
+    background: var(--white);
+    color: var(--primary);
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-carrinho-topo:hover { 
+    transform: scale(1.05); 
+    background: #fff0f0; 
+}
+
+/* ==========================================================================
+   3. BANNER / HERO (CARROSSEL)
+   ========================================================================== */
+
+/* Fix e Centralização para Hero Section/Banner (style.css) */
+
+.hero {
+    position: relative;
+    width: 100%;
+    height: 70vh; /* Mantém a proporção estável, mas você pode aumentar se quiser */
+    overflow: hidden; /* Essencial para object-fit funcionar */
+    margin-bottom: 20px;
+}
+
+.banner-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none; /* Oculto por padrão, controlado pelo JS */
+    z-index: 1; /* Fica atrás das setas */
+}
+
+/* O "pulo do gato" para a centralização */
+.banner-item.active {
+    display: flex; /* Ativa Flexbox apenas no banner visível */
+    flex-direction: column; /* Organiza itens em coluna vertical */
+    justify-content: center; /* Centraliza verticalmente o conteúdo */
+    align-items: center; /* Centraliza horizontalmente o conteúdo */
+    text-align: center; /* Garante alinhamento de texto centralizado */
+}
+
+.banner-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Importante: força a imagem a cobrir o espaço */
+    z-index: -2; /* Fica atrás de overlays e texto */
+}
+
+/* Opcional: Adiciona um overlay escuro semi-transparente para o texto branco contrastar */
+.banner-item::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); /* Escurece a imagem levemente */
+    z-index: -1; /* Fica atrás do texto, mas na frente da imagem */
+}
+
+.hero-content {
+    /* Centralização agora é feita no pai (.banner-item.active) */
+    color: white; /* Garante que o texto seja branco para contrastar */
+    padding: 20px;
+    max-width: 800px; /* Evita que o texto fique muito largo em telas grandes */
+    position: relative;
+    z-index: 10; /* Traz para a frente, acima dos overlays */
+}
+
+/* Espaçamento elegante para os textos internos */
+.hero-content h2 {
+    font-size: 3rem;
+    margin-top: 0; /* Remove margens padrões que sobrepõem */
+    margin-bottom: 15px; /* Adiciona espaçamento controlado */
+}
+
+.hero-content p {
+    font-size: 1.5rem;
+    margin-top: 0;
+    margin-bottom: 30px; /* Espaçamento entre texto e botão */
+}
+
+/* Botões de Destaque */
+.btn-destaque {
+    /* Manter sua estilização de botão, mas garantir z-index */
+    position: relative;
+    z-index: 15;
+}
+
+/* Posicionamento Correto dos Botões de Seta */
+.seta-banner {
+    position: absolute;
+    top: 50%; /* Centraliza verticalmente */
+    transform: translateY(-50%); /* Ajusta para centralizar */
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2.5rem; /* Aumentar o tamanho para ficar mais visível */
+    padding: 10px 15px;
+    cursor: pointer;
+    z-index: 20; /* Mantém as setas acima de todo o conteúdo */
+    border-radius: 5px;
+}
+
+.seta-banner.anterior {
+    left: 15px; /* Posiciona na esquerda */
+}
+
+.seta-banner.proximo {
+    right: 15px; /* Posiciona na direita */
+}
+
+/* ==========================================================================
+   4. CARTÃO FIDELIDADE
+   ========================================================================== */
+#fidelidade-container {
+    /* 1. Removemos o posicionamento que sobrepunha */
+    position: relative; 
+    top: auto;
+    left: auto;
+    transform: none;
+
+    /* 2. Centralizamos na página abaixo do hero */
+    margin: 30px auto; 
+    width: 90%;
+    max-width: 600px;
+    z-index: 5; /* Garante que fique atrás de modais */
+
+    /* 3. Estilização para ficar bonito (manter o que já tem, mas garantir estes) */
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.fidelidade-card {
+    background: var(--white);
+    padding: 25px;
+    border-radius: 20px;
+    margin: -40px auto 40px;
+    max-width: 600px;
+    position: relative;
+    z-index: 30;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    text-align: center;
+}
+
+.barra-progresso {
+    background: #eee;
+    border-radius: 20px;
+    height: 30px;
+    width: 100%;
+    overflow: hidden;
+    margin: 15px 0;
+    border: 1px solid #ddd;
+}
+
+.progresso {
+    background: linear-gradient(90deg, #ff4d4d, var(--primary));
+    height: 100%;
+    width: 0%;
+    transition: width 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   5. GRID DE PRODUTOS (PIZZAS E BEBIDAS)
+   ========================================================================== */
+/* Seção 5 - Cardápio */
+.grid-cardapio {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    padding: 20px 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Seção 8 - Footer */
+footer {
+    background-color: #1a1a1a;
+    color: white;
+    padding: 40px 5% 20px;
+    margin-top: 50px;
+    text-align: center;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.grid-pizzas, #bebidas-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    padding: 40px 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.pizza-card {
+    background: var(--white);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: 0.3s;
+    position: relative;
+    cursor: pointer;
+}
+
+.pizza-card:hover { 
+    transform: translateY(-10px); 
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15); 
+}
+
+.pizza-card img { 
+    width: 100%; 
+    height: 200px; 
+    object-fit: cover; 
+}
+
+.pizza-info { 
+    padding: 20px; 
+    text-align: center; 
+}
+
+.pizza-preco { 
+    color: var(--primary); 
+    font-weight: bold; 
+    font-size: 1.2rem; 
+    margin: 10px 0; 
+    display: block; 
+}
+
+.pizza-info button {
+    width: 100%; 
+    padding: 12px; 
+    background: var(--primary);
+    color: var(--white); 
+    border: none; 
+    border-radius: 8px;
+    font-weight: bold; 
+    cursor: pointer; 
+    text-transform: uppercase;
+}
+
+/* Selos e Badges */
+.badge-destaque, .selo-novo {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+    color: var(--white);
+    z-index: 10;
+}
+
+.badge-destaque { background: var(--primary); }
+.selo-novo { background: linear-gradient(45deg, #007bff, #00c6ff); left: 10px; right: auto; }
+
+/* ==========================================================================
+   6. CARRINHO SIDEBAR (O SEU PROBLEMA ATUAL)
+   ========================================================================== */
+.carrinho-sidebar {
+    height: 100vh;
+    width: 0;
+    position: fixed;
+    z-index: 3000;
+    top: 0;
+    right: 0;
+    background: var(--white);
+    transition: 0.4s;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden; /* Garante que o conteúdo suma quando width for 0 */
+}
+
+.carrinho-header {
+    padding: 20px;
+    background: var(--dark);
+    color: var(--white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#itens-carrinho {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* Estilo do item dentro do carrinho */
+.item-carrinho {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px dashed #ddd;
+    gap: 10px;
+}
+
+.item-info-texto { flex: 1; }
+.item-info-texto strong { display: block; font-size: 1rem; }
+.item-info-texto small { color: var(--gray-text); font-size: 0.8rem; }
+
+.item-acoes {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    min-width: 90px;
+}
+
+.item-acoes span { font-weight: bold; color: var(--primary); margin-bottom: 5px; }
+
+.btn-remover-item {
+    background: #ff4444;
+    color: var(--white);
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+
+.carrinho-footer {
+    padding: 20px;
+    border-top: 1px solid #ddd;
+    background: #f9f9f9;
+}
+
+/* ==========================================================================
+   7. MODAIS E UTILITÁRIOS
+   ========================================================================== */
+
+/* Ajuste para os selects de sabores no modo Meia a Meia */
+#container-removiveis select, 
+#container-adicionais select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    outline: none;
+    cursor: pointer;
+}
+
+#container-removiveis label, 
+#container-adicionais label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: var(--dark);
+}
+
+/* Remova ou comente o display: none antigo e use este */
+.modal {
+    display: none; /* O JS vai mudar para 'flex' ou 'block' */
+    position: fixed;
+    z-index: 9999; /* Valor bem alto para ficar acima do banner e carrinho */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    align-items: center;
+    justify-content: center;
+}
+
+/* Unifica os nomes das classes e garante que comecem escondidos */
+.modal, .modal-container {
+    display: none; /* Escondido por padrão */
+    position: fixed;
+    z-index: 5000; /* Aumentei para ficar ACIMA de tudo */
+    left: 0; 
+    top: 0; 
+    width: 100%; 
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(5px);
+    align-items: center;
+    justify-content: center;
+}
+
+/* Esta classe o JavaScript vai adicionar para abrir a janela */
+.modal.active, .modal-container.active {
+    display: flex !important;
+}
+
+.modal-content {
+    background: var(--white);
+    margin: auto; /* Centraliza melhor */
+    padding: 25px;
+    width: 95%;
+    max-width: 500px;
+    border-radius: 15px;
+    position: relative;
+    max-height: 90vh; /* Impede que o modal suma para baixo em telas pequenas */
+    overflow-y: auto; /* Permite rolar se o conteúdo for grande */
+}
+
+/* Container do WhatsApp */
+.whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 20px;
+    left: 20px; /* Mantendo na esquerda como na sua imagem */
+    background-color: #25d366;
+    color: #FFF;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 30px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+/* Animação de pulso para chamar atenção */
+.whatsapp-float {
+    animation: pulse-whatsapp 2s infinite;
+}
+
+/* Ajuste da legenda (o texto que estava aparecendo errado) */
+.whatsapp-float::after {
+    content: "Dúvidas? Chame aqui!";
+    position: absolute;
+    left: 70px; /* Joga o texto para a direita do botão */
+    background: #333;
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+    pointer-events: none;
+}
+
+/* Mostrar legenda apenas no HOVER (passar o mouse) */
+.whatsapp-float:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+.whatsapp-float:hover {
+    background-color: #128c7e;
+    transform: scale(1.1);
+}
+
+/* Keyframes da animação */
+@keyframes pulse-whatsapp {
+    0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+
+@media (max-width: 600px) {
+    .grid-cardapio {
+        grid-template-columns: 1fr; /* Uma única coluna no celular */
+        padding: 10px 20px;
+    }
+    
+    .titulo-secao {
+        font-size: 1.8rem;
+    }
+}
+
+/* Ajuste para Mobile */
+@media (max-width: 600px) {
+    .whatsapp-float {
+        width: 50px;
+        height: 50px;
+        bottom: 15px;
+        left: 15px;
+        font-size: 25px;
+    }
+    .whatsapp-float::after { display: none; } /* Esconde texto no celular */
+}
+
+/* ==========================================================================
+   8. FOOTER
+   ========================================================================== */
+footer {
+    background: var(--dark);
+    color: var(--white);
+    padding: 60px 5% 30px;
+    margin-top: 50px;
+    position: relative; /* Garante que ele respeite o fluxo da página */
+    clear: both;        /* Evita que elementos flutuantes o cubram */
+    width: 100%;
+    display: block !important; /* Força a exibição */
+}
+
+.footer-bottom {
+    text-align: center;
+    border-top: 1px solid #333;
+    padding-top: 20px;
+    margin-top: 20px;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+/* ==========================================================================
+   9. RESPONSIVIDADE
+   ========================================================================== */
+@media (max-width: 768px) {
+    .hero { height: 350px; }
+    .hero-content h2 { font-size: 1.8rem; }
+    nav a { display: none; }
+    .grid-pizzas { grid-template-columns: 1fr; }
+}
+
+/* Animação para o ícone de carregamento */
+.fa-clock-o {
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.4; }
+    100% { opacity: 1; }
+}
+
+#status-pedido {
+    font-weight: bold;
+    font-size: 0.9rem;
+    border: 1px solid #ffe082;
+    transition: all 0.5s ease;
+}
+
+/* Faz o relógio rodar ou pulsar enquanto processa */
+.fa-clock-o {
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.section-title h2 {
+    margin-top: 50px; /* Aumenta o espaço acima do título */
+    margin-bottom: 20px;
+}
+
+/* Garante que a imagem do modal apareça e não fique "quebrada" */
+#modal-img {
+    min-height: 200px;
+    background-color: #f0f0f0; /* Fundo cinza caso a imagem demore a carregar */
+    display: block;
+}
+
+/* Estilo para destacar as opções doces no select */
+.borda-doce {
+    color: #ff0044;
+    font-weight: bold;
+}
+
+#modal-img {
+    width: 100%;
+    height: 200px; /* Altura fixa para não empurrar o texto para fora */
+    object-fit: cover; /* Corta a imagem sem esticar */
+    border-radius: 8px;
+}
+
+.pizza-card img, .bebida-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover; /* Garante que a imagem não estique */
+    display: block;
+}
+
+.grid-opcoes {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Duas colunas de checkboxes */
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.grid-opcoes label {
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Container de Status do Pedido */
+#status-pedido {
+    display: none; /* Escondido por padrão */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    z-index: 9999;
+    text-align: center;
+    border: 2px solid #e31d1d; /* Cor da sua marca */
+}
+
+#icone-status {
+    font-size: 40px;
+    margin-bottom: 15px;
+    display: block;
+}
+
+#texto-status {
+    font-weight: bold;
+    color: #333;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Escurecer o fundo quando o status aparecer */
+#status-pedido::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.5);
+    z-index: -1;
+}
+
+.grid-opcoes {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Divide em 2 colunas */
+    gap: 8px;
+    margin: 10px 0 20px 0;
+    text-align: left;
+}
+
+.grid-opcoes label {
+    font-size: 14px;
+    background: #f8f8f8;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.grid-opcoes label:hover {
+    background: #eee;
+}
+
+.grid-opcoes input[type="checkbox"] {
+    accent-color: #e31d1d; /* Checkbox na cor da pizzaria */
+}
+
+.item-carrinho-topo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.img-carrinho-mini {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.item-detalhes p {
+    font-size: 12px;
+    color: #666;
+    margin: 2px 0 2px 20px; /* Alinha o texto abaixo da imagem */
+}
+
+/* Adicione isso na seção 6 ou 9 */
+.img-carrinho-mini {
+    min-width: 50px; /* Garante que a imagem não suma em telas pequenas */
+    flex-shrink: 0;   /* Impede que o flexbox "aperte" a imagem */
+}
+
+.img-carrinho-mini {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0; /* Impede a imagem de amassar */
+}
+
+#bebidas-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.pizza-card {
+    background-color: #FFF;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+    /* Mágica do Flexbox */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribui o espaço entre o topo e o rodapé */
+    height: 100%; /* Garante que todos os cards na linha tenham a mesma altura */
+}
+
+.pizza-descricao {
+    font-size: 13px;
+    color: #555;
+    margin-top: 10px;
+    /* Limita a descrição a 3 linhas para manter a ordem visual */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.pizza-footer {
+    margin-top: 20px; /* Garante um respiro mínimo entre texto e preço */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px; /* Espaço entre o preço e o botão */
+}
+
+.pizza-preco {
+    font-weight: bold;
+    font-size: 18px;
+    color: #2e7d32; /* Um verde escuro para destaque */
+}
+
+.btn-adicionar {
+    width: 100%;
+    padding: 10px;
+    background-color: #ff0000;
+    color: #FFF;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-adicionar:hover {
+    background-color: #cc0000;
+}
+
+/* Ajusta o container para virar uma grade automática */
+#cardapio, #bebidas-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Controla o tamanho dos cards de pizza e bebida */
+#cardapio > div, #bebidas-container > div {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Garante que as imagens não fiquem gigantes */
+#cardapio img, #bebidas-container img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover; /* Faz a imagem preencher o espaço sem distorcer */
+}
+
+.titulo-secao {
+    text-align: center;
+    font-size: 2.5rem;
+    margin: 40px 0 20px;
+    color: var(--dark);
+    width: 100%; /* Garante que ocupe a largura total para centralizar o texto */
+}
+
+#select-tipo-pizza, #select-segundo-sabor {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+#container-segundo-sabor h4 {
+    color: var(--primary);
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+/* Estilo geral para as linhas de detalhes no carrinho */
+.detalhe-item {
+    font-size: 0.8rem;
+    color: var(--gray-text); /* Use sua variável de cinza */
+    margin: 2px 0 2px 20px; /* Alinha com recuo abaixo do nome */
+    line-height: 1.2;
+}
+
+/* Destaque específico para o segundo sabor */
+.sabor-extra {
+    color: var(--primary); /* Use a cor vermelha da sua marca */
+    font-weight: bold;
+}

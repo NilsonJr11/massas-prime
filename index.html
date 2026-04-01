@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Massas Prime - Pizzaria Artesanal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <a href="https://wa.me/5511991494189" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <header>
+        <div class="nav-container">
+            <h1>Massas Prime 🍕</h1>
+            <nav>
+                <a href="#home">INÍCIO</a>
+                <a href="#cardapio-container">CARDÁPIO</a>
+                <button class="btn-carrinho-topo" onclick="abrirCarrinho()">
+                    🛒 Meu Pedido (<span id="contagem-carrinho">0</span>)
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="banner-item active">
+            <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070" alt="Pizza Artesanal" class="banner-img">
+            <div class="hero-content">
+                <h2>Massa artesanal, sabor inesquecível.</h2>
+                <p>Peça agora e receba em casa com rapidez.</p>
+                <button onclick="scrollParaCardapio()" class="btn-destaque">VER CARDÁPIO</button>
+            </div>
+        </div>
+
+        <div class="banner-item">
+            <img src="https://images.unsplash.com/photo-1574126154517-d1e0d89ef734?q=80&w=1974" alt="Promoção do Mês" class="banner-img">
+            <div class="hero-content">
+                <h2>Promoção da Semana 🔥</h2>
+                <p>Na compra de 2 pizzas, o refri é por nossa conta!</p>
+                <button onclick="adicionarComboFamilia()">APROVEITAR</button>
+            </div>
+        </div>
+
+        <div class="banner-item">
+            <img src="https://images.unsplash.com/photo-1579751626657-72bc17010498?q=80&w=2069" alt="Combo Prime" class="banner-img">
+            <div class="hero-content">
+                <h2>Combo Prime de Hoje! 🔥</h2>
+                <p>1 Pizza Grande + 1 Coca-Cola 2L por apenas <strong>R$ 55,00</strong></p>
+                <button onclick="adicionarCombo('Mussarela/Pepperoni', 'Coca-Cola 2L', 55.00)" class="btn-destaque">ADICIONAR COMBO</button>
+            </div>
+        </div>
+
+        <button class="seta-banner anterior" onclick="mudarBannerManual(-1)">&#10094;</button>
+        <button class="seta-banner proximo" onclick="mudarBannerManual(1)">&#10095;</button>
+    </section>
+
+    <div id="fidelidade-container" class="fidelidade-card">
+        <h3>🎁 Seu Cartão Fidelidade</h3>
+        <div class="barra-progresso">
+            <div id="progresso-pizzas" class="progresso">0%</div>
+        </div>
+        <p id="fidelidade-status">Carregando seus pontos...</p>
+    </div>
+
+    <main id="cardapio-container">
+        <h2 class="titulo-secao">🍕 Nossas Pizzas</h2>
+        <div id="cardapio" class="grid-cardapio"></div>
+
+        <h2 class="titulo-secao">🥤 Bebidas Geladas</h2>
+        <div id="bebidas-container" class="grid-cardapio"></div>
+    </main>
+
+    <div id="carrinho-lateral" class="carrinho-sidebar">
+        <div class="carrinho-header">
+            <h3>Seu Pedido</h3>
+            <button onclick="fecharCarrinho()" class="btn-fechar">&times;</button>
+        </div>
+        
+        <div id="itens-carrinho" class="carrinho-corpo"></div>
+
+        <div class="secao-cupom">
+            <input type="text" id="input-cupom" placeholder="Tem cupom?">
+            <button onclick="aplicarCupom()">Ativar</button>
+            <p id="feedback-cupom" class="feedback"></p>
+        </div>
+
+        <div class="dados-cliente">
+            <h4>Dados de Entrega</h4>
+            <input type="text" id="cliente-nome" placeholder="Seu Nome completo">
+            <input type="text" id="cliente-endereco" placeholder="Rua, Número e Apto">
+            <select id="select-bairro" onchange="atualizarFrete()">
+                <option value="0" data-valor="0">Selecione seu bairro</option>
+                <option value="5.00" data-valor="5.00">Centro (Taxa R$ 5,00)</option>
+                <option value="8.00" data-valor="8.00">Bairro Longe (Taxa R$ 8,00)</option>
+            </select>
+        </div>
+
+        <div class="carrinho-footer">
+            <p>Subtotal: <span id="subtotal-carrinho">R$ 0,00</span></p>
+            <p><strong>Total Geral: <span id="total-carrinho">R$ 0,00</span></strong></p>
+            <button class="btn-finalizar" onclick="enviarWhatsApp()">Enviar Pedido no WhatsApp 🚀</button>
+            <button class="btn-limpar" onclick="limparCarrinho()">Limpar Tudo 🧹</button>
+        </div>
+    </div>
+
+    <div id="modal-pizzas" class="modal-container" style="display: none;">
+        <div class="modal-content">
+            <button class="close" onclick="fecharModal()">&times;</button>
+            <img id="modal-img" src="" alt="" style="width: 100%; max-height: 250px; object-fit: cover; border-radius: 10px;">
+            <h2 id="modal-nome"></h2>
+            <p id="modal-descricao"></p>
+
+            <h4>Tipo da Pizza</h4>
+            <select id="select-tipo-pizza" onchange="alternarSaborExtra()">
+                <option value="inteira">Inteira</option>
+                <option value="meia">Meio a Meia</option>
+            </select>
+
+            <div id="container-segundo-sabor" style="display: none; margin-top: 15px;">
+                <h4>Escolha o Segundo Sabor</h4>
+                <select id="select-segundo-sabor" onchange="atualizarPrecoModal()">
+                    </select>
+            </div>
+
+            <h4>Retirar Ingredientes?</h4>
+            <div id="container-removiveis"></div>
+
+            <h4>Turbinar sua pizza!</h4>
+            <div id="container-adicionais"></div>
+
+            <h4>Borda Recheada</h4>
+            <select id="select-borda" onchange="atualizarPrecoModal()"></select>
+
+            <div class="modal-footer">
+                <h3 id="modal-total">Total: R$ 0,00</h3>
+                <button id="btn-confirmar-adicionar" class="btn-destaque">Confirmar e Adicionar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-produto" class="modal-container" style="display: none;">
+        <div class="modal-content">
+            <button class="close" onclick="document.getElementById('modal-produto').style.display = 'none'">&times;</button>
+            <img id="modal-imagem" src="" alt="" style="width: 100%; max-height: 250px; object-fit: cover; border-radius: 10px;">
+            <h2 id="modal-titulo"></h2>
+            <p id="modal-descricao"></p>
+            
+            <div class="modal-footer">
+                <h3 id="modal-preco">R$ 0,00</h3>
+                <button id="btn-adicionar-carrinho" class="btn-destaque">Adicionar ao Carrinho</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Massas Prime 🍕</h3>
+                <p>A melhor pizza artesanal da região, feita com amor e ingredientes selecionados.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Contatos</h4>
+                <p><i class="fas fa-phone"></i> (11) 99149-4189</p>
+                <p><i class="fas fa-map-marker-alt"></i> São Paulo, SP</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Massas Prime - Todos os direitos reservados.
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
