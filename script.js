@@ -79,6 +79,7 @@ function adicionarComboFamilia() {
     // 1. Criamos o objeto seguindo o padrão que seu 'atualizarCarrinho' entende
     const comboItem = {
         nome: "🎁 COMBO: Portuguesa + 4 Queijos + Coca 2L",
+        imagem: "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1000",
         preco: 60.00, 
         detalhes: { 
             borda: "Padrão", 
@@ -254,34 +255,26 @@ function atualizarCarrinho() {
     if (!container) return;
 
     container.innerHTML = carrinho.map((item, index) => {
+        // 1. Tenta pegar a imagem de dentro do próprio item (Funciona para os COMBOS)
+        // 2. Se não tiver no item, procura na lista (Funciona para Pizzas comuns)
         const info = listaPizzas.find(p => p.nome === item.nome) || listaBebidas.find(b => b.nome === item.nome);
-        const img = info ? info.imagem : "";
+        const img = item.imagem || (info ? info.imagem : ""); 
 
         return `
             <div class="item-carrinho" style="border-bottom: 1px solid #eee; padding: 10px 0;">
                 <div style="display: flex; align-items: center; gap: 10px;">
-                    <img src="${img}" style="width: 40px; height: 40px; border-radius: 5px; object-fit: cover;">
+                    <img src="${img}" style="width: 40px; height: 40px; border-radius: 5px; object-fit: cover;>
                     <div style="flex-grow: 1;">
                         <h4 style="margin:0; font-size:0.9rem;">${item.nome}</h4>
                         <p style="margin:0; font-size:0.8rem; color:#ff3366;">R$ ${parseFloat(item.preco).toFixed(2)}</p>
                     </div>
                     <button onclick="removerDoCarrinho(${index})" style="background:none; border:none; color:red; cursor:pointer;"><i class="fa fa-trash"></i></button>
                 </div>
-
-                <div style="font-size: 0.75rem; color: #666; margin-left: 50px; margin-top: 5px;">
-                    ${item.tipo === "meia" && item.sabor2 ? 
-                        `<div style="color: #ff0044; font-weight: bold; margin-bottom: 3px;">🌓 Meio: ${item.sabor2}</div>` 
-                        : ""
-                    }
-
-                    ${item.detalhes ? `
-                        ${item.detalhes.borda !== "Sem Borda" ? `<div>🍕 Borda: ${item.detalhes.borda}</div>` : ""}
-                        ${item.detalhes.adicionais.length ? `<div>➕ Extras: ${item.detalhes.adicionais.join(', ')}</div>` : ""}
-                        ${item.detalhes.removidos.length ? `<div>🚫 Sem: ${item.detalhes.removidos.join(', ')}</div>` : ""}
-                    ` : ""}
-                </div>
-            </div>`;
+                </div>`;
     }).join('');
+
+    // --- Sua lógica de cálculos abaixo continua igual ---
+    // ...
 
     // --- Restante da sua lógica de cálculos (Subtotal, Total, etc) ---
     let soma = carrinho.reduce((acc, i) => acc + (parseFloat(i.preco) || 0), 0);
@@ -583,6 +576,7 @@ function abrirModalCombo(pizzaNome, bebidaNome, precoTotal) {
 function executarAdicaoCombo(pizzaNome, bebidaNome, precoTotal) {
     const itemCombo = {
         nome: `🎁 COMBO: Pizza (${pizzaNome}) + ${bebidaNome}`,
+        imagem: "https://images.unsplash.com/photo-1620052397235-aa4ca207826e?q=80&w=1000",
         preco: parseFloat(precoTotal),
         detalhes: {
             borda: "Padrão",
@@ -636,6 +630,7 @@ function adicionarCombo(pizzaNome, bebidaNome, precoTotal) {
     // 1. Cria um item especial de combo na estrutura que o carrinho entende
     const itemCombo = {
         nome: `🎁 COMBO: Pizza (${pizzaNome}) + ${bebidaNome}`,
+        imagem: "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1000",
         preco: parseFloat(precoTotal), // Blindagem contra NaN! 🛡️
         detalhes: {
             borda: "Padrão",
