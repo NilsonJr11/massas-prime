@@ -913,3 +913,24 @@ footer {
     color: var(--primary); /* Use a cor vermelha da sua marca */
     font-weight: bold;
 }
+
+#itens-carrinho input, 
+#itens-carrinho select {
+    width: 100%;      /* Faz todos ocuparem a largura total do carrinho */
+    margin-bottom: 8px; /* Cria um espaçamento igual entre eles */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;    /* Altura interna do campo */
+    box-sizing: border-box; /* Garante que o padding não "estoure" a largura */
+}
+
+.input-carrinho {
+    width: 100%;             /* Garante que todos ocupem a mesma largura */
+    padding: 8px;            /* Espaço interno igual para todos */
+    margin-bottom: 10px;     /* Espaçamento vertical entre um campo e outro */
+    border: 1px solid #ccc;  /* Cor da borda padronizada */
+    border-radius: 4px;      /* Arredondamento suave */
+    background-color: #fff;  /* Fundo branco */
+    box-sizing: border-box;  /* Impede que o padding aumente a largura total */
+    font-size: 0.9rem;       /* Tamanho da fonte padronizado */
+}

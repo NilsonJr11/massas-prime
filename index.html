@@ -88,15 +88,23 @@
             <p id="feedback-cupom" class="feedback"></p>
         </div>
 
-        <div class="dados-cliente">
-            <h4>Dados de Entrega</h4>
-            <input type="text" id="cliente-nome" placeholder="Seu Nome completo">
-            <input type="text" id="cliente-endereco" placeholder="Rua, Número e Apto">
-            <select id="select-bairro" onchange="atualizarFrete()">
-                <option value="0" data-valor="0">Selecione seu bairro</option>
-                <option value="5.00" data-valor="5.00">Centro (Taxa R$ 5,00)</option>
-                <option value="8.00" data-valor="8.00">Bairro Longe (Taxa R$ 8,00)</option>
-            </select>
+    <div class="dados-cliente">
+        <h4>Dados de Entrega</h4>
+        <input type="text" id="cliente-nome" class="input-carrinho" placeholder="Seu Nome completo">
+        <input type="text" id="cliente-endereco" class="input-carrinho" placeholder="Rua, Número e Apto">
+
+        <select id="forma-pagamento" class="input-carrinho">
+            <option value="" disabled selected>Forma de pagamento</option>
+            <option value="dinheiro">Dinheiro</option>
+            <option value="cartao">Cartão (Maquininha)</option>
+            <option value="pix">Pix</option>
+        </select>
+
+        <select id="select-bairro" class="input-carrinho" onchange="atualizarFrete()">
+            <option value="0" data-valor="0">Selecione seu bairro</option>
+            <option value="5.00" data-valor="5.00">Centro (Taxa R$ 5,00)</option>
+            <option value="8.00" data-valor="8.00">Bairro Longe (Taxa R$ 8,00)</option>
+        </select>
         </div>
 
         <div class="carrinho-footer">
