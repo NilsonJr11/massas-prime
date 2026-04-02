@@ -345,16 +345,20 @@ function enviarWhatsApp() {
     const endereco = document.getElementById('cliente-endereco').value;
     const bairroSelect = document.getElementById('select-bairro');
     const bairro = bairroSelect ? bairroSelect.options[bairroSelect.selectedIndex].text : "";
+    // --- 💳 NOVA LINHA: Captura a Forma de Pagamento ---
+    const formaPagamento = document.getElementById('forma-pagamento').value;
+    // --------------------------------------------------
 
-    if (!nome || !endereco || bairro === "Selecione seu bairro") {
-        return alert("Por favor, preencha nome, endereço e selecione o bairro!");
+    if (!nome || !endereco || formaPagamento === "") {
+        alert("Por favor, preencha nome, bairro e forma de pagamento!");
+        return;
     }
 
     // Registra no fidelidade, mas NÃO limpa o carrinho automaticamente
     registrarVendaFidelidade();
 
     let msg = `*🔥 NOVO PEDIDO - MASSAS PRIME *\n\n`;
-    msg += `👤 *Cliente:* ${nome}\n📍 *Endereço:* ${endereco}\n🏘️ *Bairro:* ${bairro}\n`;
+    msg += `👤 *Cliente:* ${nome}\n📍 *Endereço:* ${endereco}\n🏘️ *Bairro:* ${bairro}\n💲 *Pagamento:* ${formaPagamento}\n💰` ;
     msg += `------------------------------------------\n`;
 
     carrinho.forEach((item, i) => {
