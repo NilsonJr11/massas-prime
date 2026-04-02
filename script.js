@@ -17,7 +17,7 @@ const sabores = [
 ];
 
 const listaPizzas = [
-    {   id: 1, nome: "Mussarela", preco: 40.00, tipo: "salgada",
+     {   id: 1, nome: "Mussarela", preco: 40.00, tipo: "salgada",
         imagem: "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?q=80&w=400", 
         descricao: "Molho de tomate artesanal, mussarela premium, rodelas de tomate fresco e orégano.",
         removiveis: ["Cebola", "Tomate", "Azeitona"]
@@ -381,7 +381,7 @@ function enviarWhatsApp() {
     msg += `💰 *TOTAL A PAGAR: R$ ${totalGeral.toFixed(2)}*`;
 
     // Apenas abre o WhatsApp. O carrinho continua lá como rascunho.
-    window.open(`https://wa.me/5511991494189?text=${encodeURIComponent(msg)}`, "_blank");
+    window.open(`https://wa.me/5511999999999?text=${encodeURIComponent(msg)}`, "_blank");
 }
 
 function aplicarCupom() {
