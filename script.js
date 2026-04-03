@@ -18,40 +18,40 @@ const sabores = [
 
 const listaPizzas = [
      {   id: 1, nome: "Mussarela", preco: 40.00, tipo: "salgada",
-        imagem: "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?q=80&w=400", 
+        imagem: "./img/mussarela1.jpg", 
         descricao: "Molho de tomate artesanal, mussarela premium, rodelas de tomate fresco e orégano.",
         removiveis: ["Cebola", "Tomate", "Azeitona"]
     },
     {   id: 2, nome: "Quatro Queijos", preco: 45.00, tipo: "salgada",
-        imagem: "https://images.unsplash.com/photo-1548369937-47519962c11a?q=80&w=1974", 
+        imagem: "./img/4queijos1.jpg", 
         descricao: "Combinação perfeita de mussarela, catupiry autêntico, provolone e parmesão ralado.",
         removiveis: ["Parmesão", "Provolone", "Catupiry"]
     },
     {   id: 3, nome: "Pepperoni", preco: 48.00, tipo: "salgada", destaque: true,
-        imagem: "https://images.unsplash.com/photo-1628840042765-356cda07504e?q=80&w=2080", 
+        imagem: "./img/pepperoni1.jpg", 
         descricao: "Mussarela coberta com fatias generosas de pepperoni levemente picante e cebola.",
         removiveis: ["Pepperoni", "Cebola"]
     },
     {   id: 4, nome: "Portuguesa", preco: 50.00, tipo: "salgada",
-        imagem: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=1981", 
+        imagem: "./img/portuguesa1.jpg", 
         descricao: "Presunto, ovos selecionados, cebola, ervilhas, mussarela e azeitonas pretas.",
         removiveis: ["Ovos", "Ervilhas", "Azeitonas"]
     },
     {   id: 10, nome: "Chocolate com Morango", preco: 42.00, tipo: "doce",
-        imagem: "https://images.unsplash.com/photo-1590947132387-155cc02f3212?q=80&w=400",
+        imagem: "./img/choc_morango1.jpg",
         descricao: "Brigadeiro artesanal, morangos frescos e granulado melita de ótima qualidade.",
         removiveis: ["Morango", "Granulado"]
     },
     {   id: 11, nome: "Romeu e Julieta", preco: 38.00, tipo: "doce",
-        imagem: "https://cdn.pixabay.com/photo/2017/01/03/11/33/pizza-1949183_960_720.jpg",
+        imagem: "./img/romeu_julieta1.jpg",
         descricao: "Mussarela derretida e goiabada cascão premium, um clássico dos doces.",
         removiveis: ["Goiabada"]
     }
 ];
 
 const listaBebidas = [
-    { id: 20, nome: "Coca-Cola 2L", preco: 12.00, imagem: "https://images.unsplash.com/photo-1554866585-cd94860890b7?q=80&w=1965", descricao: "Garrafa família de 2 Litros, bem gelada." },
-    { id: 21, nome: "Suco de Laranja 500ml", preco: 8.00, imagem: "https://images.unsplash.com/photo-1613478223719-2ab802602423?q=80&w=1974", descricao: "Suco natural feito na hora." }
+    { id: 20, nome: "Coca-Cola 2L", preco: 12.00, imagem: "./img/coca1.jpg", descricao: "Garrafa família de 2 Litros, bem gelada." },
+    { id: 21, nome: "Suco de Laranja 500ml", preco: 8.00, imagem: "./img/suco_laranja1.jpg", descricao: "Suco natural feito na hora." }
 ];
 
 // ==========================================
@@ -79,7 +79,7 @@ function adicionarComboFamilia() {
     // 1. Criamos o objeto seguindo o padrão que seu 'atualizarCarrinho' entende
     const comboItem = {
         nome: "🎁 COMBO: Portuguesa + 4 Queijos + Coca 2L",
-        imagem: "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1000",
+        imagem: "./img/combo1.jpg",
         preco: 60.00, 
         detalhes: { 
             borda: "Padrão", 
@@ -580,7 +580,7 @@ function abrirModalCombo(pizzaNome, bebidaNome, precoTotal) {
 function executarAdicaoCombo(pizzaNome, bebidaNome, precoTotal) {
     const itemCombo = {
         nome: `🎁 COMBO: Pizza (${pizzaNome}) + ${bebidaNome}`,
-        imagem: "https://images.unsplash.com/photo-1620052397235-aa4ca207826e?q=80&w=1000",
+        imagem: "./img/combo1.jpg",
         preco: parseFloat(precoTotal),
         detalhes: {
             borda: "Padrão",
@@ -634,7 +634,7 @@ function adicionarCombo(pizzaNome, bebidaNome, precoTotal) {
     // 1. Cria um item especial de combo na estrutura que o carrinho entende
     const itemCombo = {
         nome: `🎁 COMBO: Pizza (${pizzaNome}) + ${bebidaNome}`,
-        imagem: "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1000",
+        imagem: "./img/combo1.jpg",
         preco: parseFloat(precoTotal), // Blindagem contra NaN! 🛡️
         detalhes: {
             borda: "Padrão",
